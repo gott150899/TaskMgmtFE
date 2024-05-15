@@ -1,0 +1,7 @@
+<button
+    [class]="'rounded px-2 h-[32px] font-medium outline-none' + ' btn-basic__type-'+type()"
+    (click)="onClickBtn()"
+    [type]="btnType"
+>
+    {{ label() }}
+</button>

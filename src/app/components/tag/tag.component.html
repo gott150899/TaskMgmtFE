@@ -1,0 +1,7 @@
+@if (status() === 1) {
+    <nz-tag [nzColor]="'#87d068'">Đang hoạt động</nz-tag>
+}@else if (status() === 0) {
+    <nz-tag [nzColor]="'#2db7f5'">Tạm khoá</nz-tag>
+}@else {
+    <nz-tag [nzColor]="'#f50'">Xoá</nz-tag>
+}

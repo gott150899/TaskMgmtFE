@@ -1,1 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base{
+    input{
+        @apply border px-2 rounded h-[32px] outline-none transition hover:border-[#40A2E3] focus:border-[#40A2E3];
+    }
+    small{
+        @apply h-[18px] block text-[#FC4100];
+    }
+}
+@layer components{
+    .label-required::after{
+        content: '*';
+        color: red;
+        margin-left: 4px;
+    }
+    .is-error{
+        @apply border-[#FC4100]
+    }
+}

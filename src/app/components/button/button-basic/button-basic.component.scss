@@ -1,0 +1,17 @@
+.btn-basic{
+    &__type-primary{
+        @apply text-white bg-[#0E46A3];
+    }
+    &__type-secondary{
+        
+    }
+    &__type-danger{
+        @apply text-white bg-[#DD5746];
+    }
+    &__type-basic{
+        @apply text-white bg-[#9BB0C1];
+    }
+    &__type-success{
+        @apply text-white bg-[#0D9276];
+    }
+}

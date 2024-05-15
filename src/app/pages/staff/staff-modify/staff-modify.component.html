@@ -1,0 +1,46 @@
+<nz-modal [nzVisible]="isOpenForm()" [nzTitle]="titleModal" [nzFooter]="null" (nzOnCancel)="handleCancel()" [autofocus]="false">
+    <ng-container *nzModalContent>
+        <form [formGroup]="formGroup" (ngSubmit)="onSubmitForm()">
+            <div class="grid grid-cols-2 gap-2">
+                <div class="flex flex-col gap-1">
+                    <label class="label-required">Họ và tên</label>
+                    <div class="flex flex-col">
+                        <input formControlName="fullName" [ngClass]="{'is-error': getControl('fullName').errors && getControl('fullName').touched}" />
+                        <small>
+                            @if (getControl('fullName').hasError('required') && getControl('fullName').touched) {
+                                Họ và tên không được để trống
+                            }@else if(getControl('fullName').hasError('pattern') && getControl('fullName').touched){
+                                Họ và tên không hợp lệ
+                            }@else if(getControl('fullName').hasError('maxLength') && getControl('fullName').touched){
+                                Tối đa 100 ký tự
+                            }
+                        </small>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label>Tên ngắn</label>
+                    <div class="flex flex-col">
+                        <input formControlName="shortName" [ngClass]="{'is-error': getControl('shortName').errors && getControl('shortName').touched}" />
+                        <small>
+                            @if (getControl('shortName').hasError('maxLength') && getControl('shortName').touched) {
+                                Tối đa 100 ký tự
+                            }
+                        </small>
+                    </div>
+                </div>
+                <div class="col-span-2 mt-2">
+                    <div class="flex justify-end gap-2">
+                        <app-button-basic label="Hủy" type="basic" (onClick)="handleCancel()" />
+                        <app-button-basic [label]="buttonText" type="success" btnType="submit" />
+                        <!-- <button type="button" (click)="handleCancel()">Hủy</button> -->
+                        <!-- <button type="submit">{{ buttonText }}</button> -->
+                    </div>
+                </div>
+            </div>
+        </form>
+      <!-- <div class="flex justify-end gap-2">
+        <button (click)="handleCancel()">Hủy</button>
+        <button (click)="onConfirmDelete()">Xác nhận</button>
+      </div> -->
+    </ng-container>
+</nz-modal>

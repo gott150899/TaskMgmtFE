@@ -1,0 +1,75 @@
+<div class="p-4 border border-[#ccc] rounded bg-white">
+  <div class="flex justify-between mb-2">
+    <div class="flex-1 flex gap-2">
+      <div class="flex gap-2">
+        <input type="text" placeholder="Tìm kiếm theo họ và tên" [(ngModel)]="searchText">
+        <app-button-basic label="Tìm kiếm" (onClick)="onFetchData()" />
+      </div>
+      <!-- <div class="flex gap-2 items-center">
+        <nz-select [(ngModel)]="filterStatus" class="w-[100px]">
+          <nz-option [nzValue]="9999" nzLabel="Tất cả"></nz-option>
+          <nz-option [nzValue]="1" nzLabel="Hoạt động"></nz-option>
+          <nz-option [nzValue]="0" nzLabel="Tạm khoá"></nz-option>
+          <nz-option [nzValue]="-1" nzLabel="Đã xoá"></nz-option>
+        </nz-select>
+        <app-button-basic label="Lọc" (onClick)="onFetchData()" />
+      </div> -->
+    </div>
+    <app-button-basic label="Thêm mới" (onClick)="onAddstaff()" />
+  </div>
+  
+  <nz-table #basicTable [nzData]="data" nzBordered >
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Họ và tên</th>
+          <th>Tên ngắn</th>
+          <th>
+            <div class="flex gap-2 items-center">
+              <span>Trạng thái</span>
+              <nz-select [(ngModel)]="filterStatus" class="w-[120px]" (ngModelChange)="onChangeFilterStatus()">
+                <nz-option [nzValue]="9999" nzLabel="Tất cả"></nz-option>
+                <nz-option [nzValue]="1" nzLabel="Hoạt động"></nz-option>
+                <nz-option [nzValue]="0" nzLabel="Tạm khoá"></nz-option>
+                <nz-option [nzValue]="-1" nzLabel="Đã xoá"></nz-option>
+              </nz-select>
+            </div>
+          </th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+          @for (item of data; track item.id; let i = $index) {
+              <tr>
+                <td>{{i + 1}}</td>
+                <td>{{item.fullName}}</td>
+                <td>{{item.shortName}}</td>
+                <td>
+                  <app-tag [status]="item.status" />
+                </td>
+                <td>
+                  @if (item.status === 1) {
+                    <app-action 
+                      [isUpdate]="true" 
+                      [isDelete]="true"
+                      (onDelete)="onDeleteItem(item)"
+                      (onUpdate)="onUpdateItem(item)"
+                    />
+                  }
+                </td>
+              </tr>
+          }
+      </tbody>
+  </nz-table>
+</div>
+
+<nz-modal [nzVisible]="isVisibleDelete" [nzTitle]="messageDeleteWarning" [nzFooter]="null" (nzOnCancel)="handleCancel()">
+  <ng-container *nzModalContent>
+    <div class="flex justify-end gap-2">
+      <app-button-basic label="Hủy" type="basic" (onClick)="handleCancel()" />
+      <app-button-basic label="Xác nhận" type="danger" (onClick)="onConfirmDelete()" />
+    </div>
+  </ng-container>
+</nz-modal>
+
+<app-staff-modify [isOpenForm]="isOpenFormUpdate" [staffModify]="staffUpdate" (onCloseModal)="onCloseFormModify()" (onAfterSubmit)="onAfterSubmitFormModify()" />

@@ -1,0 +1,10 @@
+<!-- <div [class]="'grid gap-1' + ' action-col-'+totalCol"> -->
+<div class="flex gap-2">
+    @if (isUpdate()) {
+        <app-button-basic label="Cập nhật" (onClick)="onUpdateItem()" />
+    }
+    @if (isDelete()) {
+        <app-button-basic label="Khoá" type="danger" (onClick)="onDeleteItem()" />
+    }
+</div>
+
