@@ -18,7 +18,7 @@
     <app-button-basic label="Thêm mới" (onClick)="onAddstaff()" />
   </div>
   
-  <nz-table #basicTable [nzData]="data" nzBordered >
+  <nz-table #basicTable [nzData]="data" nzBordered [nzShowPagination]="false" >
       <thead>
         <tr>
           <th>STT</th>
