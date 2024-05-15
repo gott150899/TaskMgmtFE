@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 
 import { gantt } from 'dhtmlx-gantt';
 import moment from 'moment';
@@ -29,6 +29,8 @@ export class TaskComponent implements OnInit{
 
   async ngOnInit(){
     gantt.config.show_links = false;
+
+    
 
     gantt['form_blocks']["multiselect"] = {
       render: function (sns: any) {
@@ -111,9 +113,35 @@ export class TaskComponent implements OnInit{
       }
       return null;
     }
+
+    var filterValue = "";
+    var textFilter = `<input id='input-filter-task' value='${filterValue}' data-text-filter type='text' oninput='gantt.$doFilter(this.value)'>`;
+
+    var scaleHeight = gantt.config.scale_height;
+    var delay: any;
+    gantt['$doFilter'] = function(value: any){
+      filterValue = value;
+      clearTimeout(delay);
+      delay = setTimeout(function(){
+        gantt.render();
+        (gantt?.$root?.querySelector("[data-text-filter]") as any).focus();
+        setTimeout(() => {
+          $('#input-filter-task').val(filterValue);
+        }, 0);
+      }, 200)
+    }
+
+    gantt.attachEvent("onBeforeTaskDisplay", function(id, task){
+      if(!filterValue) return true;
+   
+       var normalizedText = task.text.toLowerCase();
+       var normalizedValue = filterValue.toLowerCase();
+        
+       return normalizedText.indexOf(normalizedValue) > -1;
+     });
   
     gantt.config.columns = [
-      {name: "text", tree: true, width: 200, resize: true},
+      {name: "text", label: textFilter, tree: true, width: 150, resize: true},
       {name: "start_date", align: "center", width: 80, resize: true},
       {name: "owner", align: "center", width: 75, label: "Owner", template: function (task: any) {
         if (task.type == gantt.config.types.project) {
@@ -160,7 +188,7 @@ export class TaskComponent implements OnInit{
   
     gantt.init(this.ganttContainer.nativeElement);
 
-    gantt.init(this.ganttContainer.nativeElement);
+    
 
     if(!(gantt as any).$_initOnce){
         (gantt as any).$_initOnce = true;
